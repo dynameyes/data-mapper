@@ -21,7 +21,7 @@ function _M:new(obj)
             host = config.host,
             port = config.port,
             db = config.database,
-            user = config.username,
+            user = config.user,
             password = config.password
         })
     end
