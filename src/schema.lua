@@ -6,11 +6,7 @@
 
 local schema = {
     tables = {}
-
 }
-
-setmetatable(schema, self)
-schema.__index = self
 
 function schema:search(table)
     for key, exist in pairs(self.tables) do

@@ -20,9 +20,9 @@ function _M:new(obj)
         self.db = pg.connect({
             host = config.host,
             port = config.port,
-            db = config.database,
-            user = config.username,
-            password = config.password
+            db = config.database or config.db,
+            user = config.username or config.user,
+            password = config.password or config.pass
         })
     end
 
