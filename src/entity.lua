@@ -7,6 +7,7 @@
 local schema = require('data-mapper.schema')
 local field = require('data-mapper.field')
 local relation = require('data-mapper.relation')
+local BigDecimal = require("lua-utils-bigdecimal")
 
 local entity = {
     schema = 'public',
@@ -94,6 +95,9 @@ function entity:mapper(row)
             end
             if row[row_idx:upper()] then
                 res[idx] = row[row_idx:upper()]
+            end
+            if field.type == 'bigdecimal' then
+              res[idx] = BigDecimal.new(tostring(res[idx]))
             end
         end
     end

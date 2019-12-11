@@ -16,7 +16,7 @@ local function validate_values(entity, values)
     for key, value in pairs(values) do
         local flt_field = entity:get_field(key)
         if flt_field then
-            if type(value) == 'table' then
+            if type(value) == 'table' and (not value.__name or value.__name:lower() ~= "bigdecimal") then
                 if value.value then
                     if string.lower(value.op) == 'ilike' then
                         value.value = '%' .. value.value .. '%'

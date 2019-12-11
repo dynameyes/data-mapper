@@ -42,6 +42,8 @@ local function get_value(val_type, value)
             end
         end
         return string.format("%s", bool_value)
+    elseif val_type == 'bigdecimal' then
+      return tostring(value)
     end
 end
 
@@ -67,7 +69,7 @@ function field:get_value(value)
     if value == nil then
         return 'NULL'
     end
-    if type(value) == 'table' then
+    if type(value) == 'table' and (not value.__name or value.__name:lower() ~= "bigdecimal") then
         local list = {}
         for _,item in pairs(value) do
             table.insert(list, get_value(self.type, item))
