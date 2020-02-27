@@ -397,9 +397,16 @@ function relation:mapper()
                         local link_type = link.type
 
                         if link_type == 'one' then
-
-                            link_entity.prefix = link.alias
-                            data[#data][link.alias] = link_entity:mapper(row)
+                            if not link.alias then
+                                local link_map = data[#data][link_table]
+                                if not link_map or not has_value(row, link_entity:get_col(), link_map[entity.pk]) then
+                                    link_map = link_entity:mapper(row)
+                                end
+                                data[#data][link_table] = link_map
+                            else
+                                link_entity.prefix = link.alias
+                                data[#data][link.alias] = link_entity:mapper(row)
+                            end
 
                         elseif link_type == 'many' then
                             local link_map = data[#data][link_table] or {}

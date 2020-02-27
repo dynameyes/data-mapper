@@ -8,6 +8,7 @@ Data mapper for lua
 + [Entity](#entity)
 + [Field](#field)
 + [Relation](#relation)
++ [Condition](#condition)
 
 [Dependencies](#dependencies)
 
@@ -143,7 +144,7 @@ For delete record:
 
 	test:delete{id=1}
 	
-### get_by_pk
+#### get_by_pk
 
 	test = test:get_by_pk(1)
 	print(inspect(test))
@@ -155,7 +156,7 @@ For delete record:
         testtype = "test1"
     }
 
-### get_by_field
+#### get_by_field
 
 	test = test:get_by_field('name', 'update-test')
 	print(inspect(test))
@@ -166,7 +167,7 @@ For delete record:
         testtype = "test1"
     }
 
-### get
+#### get
 
 Simple usage:
 
@@ -223,5 +224,56 @@ Now supported operation:
  
 This operation also supported in update filter
 
+### Field
 
-  
+Definition fields in entity constructor generate Field object
+Field object support 
+
+  * foreign keys  
+  * alias
+  * prefetch
+ 
+ For example add link one to many
+ 
+    uid_role = {
+        type = "string",
+        alias = "role",
+        table = role,
+        foreign_key = true
+        fetch = true
+    }
+ 
+
+### Condition
+
+Use condition for complex query in where. Now supported *and*, *or*
+
+#### _and 
+
+For example:
+
+    local sql = user:select():join(orders):where(
+       cond:_and(
+               { user, name="test" },
+               { orders, status = true }
+       ))
+    
+
+#### _or
+
+For example 
+
+    local sql = user:select():join(orders):where(
+       cond:_and(
+               { user, name="test" },
+               cond:_or(
+                    { user, status = true },
+                    { user, expires_in = -1 }),
+               { orders, status = true }
+       ))
+
+You can combine **_or** and **_and** where relation method. Also field in cond support operators
+*IN*, *<=*, *>=*, *IS*. 
+For example 
+
+    cond:_and({user, name = {op='IN', value = {"test", "test2"} } }) 
