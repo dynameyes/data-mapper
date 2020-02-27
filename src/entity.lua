@@ -104,6 +104,8 @@ function entity:mapper(row)
             end
             if field.type == 'bigdecimal' then
               res[idx] = BigDecimal.new(tostring(res[idx]))
+            elseif field.type == 'number' then
+              res[idx] = tonumber(res[idx])
             end
         end
     end
