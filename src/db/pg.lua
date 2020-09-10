@@ -17,7 +17,7 @@ function _M:new(obj)
 
     local config = obj.config
     if config then
-        self.db = pg.connect({
+        obj.db = pg.connect({
             host = config.host,
             port = config.port,
             db = config.database or config.db,
